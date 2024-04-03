@@ -3,6 +3,7 @@ package hu.webler.model;
 import hu.webler.value.Category;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Book {
 
@@ -23,7 +24,7 @@ public class Book {
                 int publicationYear, String articleNumber, List<String> authors) {
         this();
         this.title = title;
-        this.category = mapCategory(categoryNumber).getHUNGARIAN_NAME();
+        this.category = Objects.requireNonNull(mapCategory(categoryNumber)).getHungarianName();
         this.publisher = publisher;
         this.publicationYear = publicationYear;
         this.articleNumber = articleNumber;
@@ -36,30 +37,48 @@ public class Book {
     }
 
     private Category mapCategory(int categoryNumber) {
-        if (categoryNumber == 1) {
-            return Category.NOVEL;
-        } else if (categoryNumber == 2) {
-            return Category.NON_FICTION;
-        } else if (categoryNumber == 3) {
-            return Category.FAIRY_TALE;
-        } else if (categoryNumber == 4) {
-            return Category.ADVENTURE_NOVEL;
-        } else if (categoryNumber == 5) {
-            return Category.ROMANTIC;
-        } else if (categoryNumber == 6) {
-            return Category.YOUTH_NON_FICTION;
-        } else if (categoryNumber == 7) {
-            return Category.YOUTH_NOVEL;
-        } else if (categoryNumber == 8) {
-            return Category.SCIENCE_FICTION;
-        } else if (categoryNumber == 9) {
-            return Category.AUTOBIOGRAPHY;
-        } else if (categoryNumber == 10) {
-            return Category.CRIME;
-        } else {
-            return Category.UNKNOWN;
+        switch (categoryNumber) {
+            case 1:
+                return Category.NOVEL;
+            case 2:
+                return Category.NON_FICTION;
+            case 3:
+                return Category.FAIRY_TALE;
+            case 4:
+                return Category.ADVENTURE_NOVEL;
+            case 5:
+                return Category.ROMANTIC;
+            case 6:
+                return Category.YOUTH_NON_FICTION;
+            case 7:
+                return Category.YOUTH_NOVEL;
+            case 8:
+                return Category.SCIENCE_FICTION;
+            case 9:
+                return Category.AUTOBIOGRAPHY;
+            case 10:
+                return Category.CRIME;
+            default:
+                return Category.UNKNOWN;
         }
     }
+
+     /*private Category mapCategory(int categoryNumber) {
+        return switch (categoryNumber) {
+            case 1 -> Category.NOVEL;
+            case 2 -> Category.NON_FICTION;
+            case 3 -> Category.FAIRY_TALE;
+            case 4 -> Category.ADVENTURE_NOVEL;
+            case 5 -> Category.ROMANTIC;
+            case 6 -> Category.YOUTH_NON_FICTION;
+            case 7 -> Category.YOUTH_NOVEL;
+            case 8 -> Category.SCIENCE_FICTION;
+            case 9 -> Category.AUTOBIOGRAPHY;
+            case 10 -> Category.CRIME;
+            default -> Category.UNKNOWN;
+        };
+    }*/
+
     public static int getCounter() {
         return counter;
     }
@@ -136,4 +155,51 @@ public class Book {
                 ", authors=" + authors +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book book)) return false;
+
+        if (getPublicationYear() != book.getPublicationYear()) return false;
+        if (isOnStock() != book.isOnStock()) return false;
+        if (!getTitle().equals(book.getTitle())) return false;
+        if (!getCategory().equals(book.getCategory())) return false;
+        if (!getPublisher().equals(book.getPublisher())) return false;
+        if (!getArticleNumber().equals(book.getArticleNumber())) return false;
+        return getAuthors().equals(book.getAuthors());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getTitle().hashCode();
+        result = 31 * result + getCategory().hashCode();
+        result = 31 * result + getPublisher().hashCode();
+        result = 31 * result + getPublicationYear();
+        result = 31 * result + getArticleNumber().hashCode();
+        result = 31 * result + (isOnStock() ? 1 : 0);
+        result = 31 * result + getAuthors().hashCode();
+        return result;
+    }
+
+    /*
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Book other = (Book) obj;
+        return Objects.equals(title, other.title) &&
+                Objects.equals(category, other.category) &&
+                Objects.equals(publisher, other.publisher) &&
+                Objects.equals(publicationYear, other.publicationYear) &&
+                Objects.equals(articleNumber, other.articleNumber) &&
+                Objects.equals(authors, other.authors);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle(), getCategory(), getPublisher(),
+                getPublicationYear(), getArticleNumber(), isOnStock(), getAuthors());
+    }
+    */
 }

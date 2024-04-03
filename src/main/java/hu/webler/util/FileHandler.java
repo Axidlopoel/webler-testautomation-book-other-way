@@ -19,40 +19,44 @@ public class FileHandler {
             br = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = br.readLine()) != null) {
-                String[] parts = line.trim().split(";");
-                if (parts.length == 6) {
-                    String title = parts[2].trim();
-                    int categoryNumber = Integer.parseInt(parts[0].trim());
-                    String publisher = parts[3].trim();
-                    int publicationYear = Integer.parseInt(parts[4].trim());
-                    String articleNumber = parts[5].trim();
-                    String[] authorsSplit = parts[1].split(",");
-                    List<String> authors = new ArrayList<>();
-                    for (int i = 0; i < authorsSplit.length; i++) {
-                        authorsSplit[i] = authorsSplit[i].trim();
-                        authors.add(authorsSplit[i]);
+                line = line.trim(); // Remove leading and trailing whitespace
+                if (!line.isEmpty()) { // Skip empty lines
+                    String[] parts = line.trim().split(";");
+                    if (parts.length == 6) { // Check if the number of params is correct
+                        String title = parts[2].trim();
+                        int categoryNumber = Integer.parseInt(parts[0].trim());
+                        String publisher = parts[3].trim();
+                        int publicationYear = Integer.parseInt(parts[4].trim());
+                        String articleNumber = parts[5].trim();
+                        String[] authorsSplit = parts[1].split(",");
+                        for (int i = 0; i < authorsSplit.length; i++) {
+                            authorsSplit[i] = authorsSplit[i].trim();
+                        }
+                        List<String> authors = new ArrayList<>(Arrays.asList(authorsSplit));
+                        // Create book and add to list
+                        Book book = new Book(title, categoryNumber, publisher, publicationYear, articleNumber, authors);
+                        books.add(book);
+                    } else {
+                        System.out.println("Invalid number of parameters in line: " + line);
                     }
-                    Book book = new Book(title, categoryNumber,
-                            publisher, publicationYear,
-                            articleNumber, authors);
-                    books.add(book);
-                } else {
-                    System.out.println("Invalid line: " + line);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-               if(br != null) {
-                   br.close();
-               }
+                if (br != null) {
+                    br.close();
+                }
             } catch (IOException e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
         }
+
         return books;
     }
+
     private FileHandler() {
+
     }
 }

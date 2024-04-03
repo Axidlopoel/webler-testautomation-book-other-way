@@ -8,9 +8,9 @@ import java.util.List;
 public class BookService implements BookServiceI {
 
     @Override
-    public List<Book> addBook(Book addBook, List<Book> existingBooks) {
+    public List<Book> addBook(Book addBbook, List<Book> existingBooks) {
         List<Book> resultList = new ArrayList<>(existingBooks);
-        resultList.add(addBook);
+        resultList.add(addBbook);
         return resultList;
     }
 
@@ -20,6 +20,7 @@ public class BookService implements BookServiceI {
         for (int i = 0; i < resultList.size(); i++) {
             if (resultList.get(i).equals(bookToDelete)) {
                 resultList.remove(i);
+                // Decrease index after removal
                 i--;
             }
         }

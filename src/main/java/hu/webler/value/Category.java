@@ -1,7 +1,6 @@
 package hu.webler.value;
 
 public enum Category {
-
     NOVEL("regény"),
     NON_FICTION("ismeretterjesztő"),
     FAIRY_TALE("mese"),
@@ -17,10 +16,10 @@ public enum Category {
     private final String HUNGARIAN_NAME;
 
     Category(String HUNGARIAN_NAME) {
-        this.HUNGARIAN_NAME = HUNGARIAN_NAME;
+        this.HUNGARIAN_NAME = HUNGARIAN_NAME ;
     }
 
-    public String getHUNGARIAN_NAME() {
+    public String getHungarianName() {
         return HUNGARIAN_NAME;
     }
 }
